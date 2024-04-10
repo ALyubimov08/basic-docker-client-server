@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  py-backend:
+    container_name: app-backend
+    image: py-backend:1.0.0
+    environment:
+      REFRESH_FREQ: 5
+      DATABASE_HOST: "10.5.0.3"
+    stdin_open: true
+    tty: true
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+
+  database:
+    container_name: postgres
+    image: postgresql-db:1.0.0
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+
